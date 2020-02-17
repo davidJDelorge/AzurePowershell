@@ -1,0 +1,57 @@
+############ Connect to MSOL and Azure AD #########
+
+#region Connect to Services
+ 
+    #Connect to Azure AD
+    Connect-AzureAD
+ 
+    #Connect EXO
+    $UserCredential = Get-Credential
+ 
+    $Session = New-PSSession -ConfigurationName Microsoft.Exchange `
+     -ConnectionUri https://outlook.office365.com/powershell-liveid/ -Credential $UserCredential `
+      -Authentication Basic -AllowRedirection
+ 
+    Import-PSSession $Session
+ 
+#endregion
+
+Install-Module -Name AzureAD -force
+Install-Module MSOnline  -force
+
+#region Connect to Services
+ 
+    #Connect to Office 365
+    #### LOGIN TO 0365
+$username = "globaladmin@whatever.com"
+$securePassword = ConvertTo-SecureString `
+        -String "Zd46Wc83" -AsPlainText -Force
+$cred = New-Object System.Management.Automation.PSCredential ($username, $securePassword)
+Connect-MsolService -Credential $cred
+ 
+#endregion
+
+
+
+
+#region Connect to Services
+ 
+    #Connect to Office 365 EOL 
+   Remove-PSSession $Session
+$username = "globaladmin@whatever.com"
+$securePassword = ConvertTo-SecureString `
+        -String "xxxxxxxxxxx" -AsPlainText -Force
+$cred = New-Object System.Management.Automation.PSCredential ($username, $securePassword)
+Connect-MsolService -Credential $cred
+
+
+Get-PSSession
+
+### Set Policy
+## Set-ExecutionPolicy Unrestricted
+
+## Connect to Exchange
+$Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://outlook.office365.com/powershell-liveid/ -Credential $cred -Authentication Basic -AllowRedirection
+
+Import-PSSession $Session -DisableNameCheckin 
+#endregion
