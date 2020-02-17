@@ -1,0 +1,40 @@
+Create an Azure Automation AzureRmAccount
+## DJD  2-17-2020
+
+#1. Log into your Azure Subscription with Global Admin rights
+#2. Navigate to your Fabric Management REsource Group, or your desired Resource Group
+#3. Make note of the RG Name and Location
+#4. Click the plus sign, type automation and fill in the required fields to create the AzureRmAccount
+#5. Once the Account is created, navigate to the account and make sure the AzureAZ and Azure RM modules are installed.
+# Example: azureRM.Profile AzureRM.Compute
+
+
+### Test Automation by using the below example of starting and Stopiing a VM on a Schedule
+
+
+## Connection using Azure Automation Account
+$connection = Get-AutomationConnection -Name AzureRunAsConnection
+Connect-AzureRmAccount -ServicePrincipal -Tenant $connection.TenantID `
+-ApplicationID $connection.ApplicationID -CertificateThumbprint $connection.CertificateThumbprint
+$AzureContext = Select-AzureRmSubscription -SubscriptionId $connection.SubscriptionID
+
+
+
+### Start a VM
+Start-AzureRMVM -ResourceGroupName  D-AZDEVOPSDEMO-01 -NAME P-SKYREPO-01
+
+
+
+### Stop A VM
+Stop-AzureRMVM -ResourceGroupName  D-AZDEVOPSDEMO-01 -NAME P-SKYREPO-01 -force
+
+#### then add RunBook to a schedule
+
+
+
+##### List of Services you can start n Stop in Azure
+##Web Apps
+## SQL DB
+##Azure VM
+## SacelSets
+## Web Tiers
